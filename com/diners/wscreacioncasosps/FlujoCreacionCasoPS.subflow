@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmRoute.msgnode="ComIbmRoute.msgnode" xmlns:ComIbmTryCatch.msgnode="ComIbmTryCatch.msgnode" xmlns:ManejoError.subflow="ManejoError.subflow" xmlns:diners_conectores_DepositarMQ.subflow="diners/conectores/DepositarMQ.subflow" xmlns:diners_utilitarios_genericos_LlamarSoap.subflow="diners/utilitarios/genericos/LlamarSoap.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="com/diners/wscreacioncasosps/FlujoCreacionCasoPS.subflow" nsPrefix="com_diners_wscreacioncasosps_FlujoCreacionCasoPS.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.timeout" name="timeout" defaultValueLiteral="7">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.nombreCola" name="nombreCola" defaultValueLiteral="M_MQ_CREACIONCASOSPS">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.nomServiceConfig" name="nomServiceConfig" defaultValueLiteral="CrearCasoPS">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="FlujoCreacionCasoPS" bundleName="com/diners/wscreacioncasosps/FlujoCreacionCasoPS" pluginId="IntegracionWSCreacionCasosPS"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/IntegracionWSCreacionCasosPS/icons/full/obj16/FlujoCreacionCasoPS.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/IntegracionWSCreacionCasosPS/icons/full/obj30/FlujoCreacionCasoPS.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="20,20">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="com/diners/wscreacioncasosps/FlujoCreacionCasoPS" pluginId="IntegracionWSCreacionCasosPS"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="816,18">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="com/diners/wscreacioncasosps/FlujoCreacionCasoPS" pluginId="IntegracionWSCreacionCasosPS"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTryCatch.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="118,20">
+        <translation xmi:type="utility:ConstantString" string="Try Catch"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="154,122" computeExpression="esql://routine/com.diners.wscreacioncasosps#FlujoCreacionCasoPS_ProcesarEntrada.Main">
+        <translation xmi:type="utility:ConstantString" string="ProcesarEntrada"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="472,127" computeExpression="esql://routine/com.diners.wscreacioncasosps#FlujoCreacionCasoPS_ProcesarSalida.Main">
+        <translation xmi:type="utility:ConstantString" string="ProcesarSalida"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="276,16" computeExpression="esql://routine/com.diners.wscreacioncasosps#FlujoCreacionCasoPS_MapearError.Main">
+        <translation xmi:type="utility:ConstantString" string="MapearError"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="654,17" computeExpression="esql://routine/com.diners.wscreacioncasosps#FlujoCreacionCasoPS_MapearSalida.Main">
+        <translation xmi:type="utility:ConstantString" string="MapearSalida"/>
+      </nodes>
+      <nodes xmi:type="diners_utilitarios_genericos_LlamarSoap.subflow:FCMComposite_1" xmi:id="FCMComposite_1_6" location="383,127">
+        <translation xmi:type="utility:ConstantString" string="LlamarSoap"/>
+      </nodes>
+      <nodes xmi:type="ManejoError.subflow:FCMComposite_1" xmi:id="FCMComposite_1_7" location="529,17">
+        <translation xmi:type="utility:ConstantString" string="ManejoError"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRoute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="284,123">
+        <outTerminals terminalNodeID="WS" dynamic="true" label="WS"/>
+        <outTerminals terminalNodeID="MQ" dynamic="true" label="MQ"/>
+        <translation xmi:type="utility:ConstantString" string="Route"/>
+        <filterTable filterPattern="$Environment/root/tipoTransaccion = 'A'" routingOutputTerminal="MQ"/>
+        <filterTable filterPattern="$Environment/root/tipoTransaccion = 'S'" routingOutputTerminal="WS"/>
+      </nodes>
+      <nodes xmi:type="diners_conectores_DepositarMQ.subflow:FCMComposite_1" xmi:id="FCMComposite_1_9" location="367,212">
+        <translation xmi:type="utility:ConstantString" string="DepositarMQ"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.try" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_8" sourceTerminalName="WS" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_8" sourceTerminalName="MQ" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.timeout">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.timeout" bundleName="com/diners/wscreacioncasosps/FlujoCreacionCasoPS" pluginId="IntegracionWSCreacionCasosPS"/>
+        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.nombreCola">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.nombreCola" bundleName="com/diners/wscreacioncasosps/FlujoCreacionCasoPS" pluginId="IntegracionWSCreacionCasosPS"/>
+          <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.nomServiceConfig">
+            <propertyName xmi:type="utility:TranslatableString" key="Property.nomServiceConfig" bundleName="com/diners/wscreacioncasosps/FlujoCreacionCasoPS" pluginId="IntegracionWSCreacionCasosPS"/>
+          </propertyDescriptor>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

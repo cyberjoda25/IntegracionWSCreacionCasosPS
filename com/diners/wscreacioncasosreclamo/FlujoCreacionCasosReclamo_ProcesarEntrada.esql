@@ -1,0 +1,229 @@
+BROKER SCHEMA com.diners.wscreacioncasosreclamo
+
+DECLARE nsHeader NAMESPACE 'http://www.dinersclub.com.ec/2016/DinHeader';
+DECLARE ns NAMESPACE 'http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS';
+DECLARE nomServiceConfig EXTERNAL CHARACTER '';
+
+/* * Funcion que mapea la estructura de entrada. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+CREATE COMPUTE MODULE FlujoCreacionCasosReclamo_ProcesarEntrada
+	/* * Funcion que mapea la estructura de entrada. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE wsentradas REFERENCE TO Environment.Body.[ < ].dinBody;
+		
+		SET Environment.codigoAplicacion = SUBSTRING(wsentradas.codAplicacion BEFORE '|');
+		SET Environment.codTransaccion = SUBSTRING(wsentradas.codAplicacion AFTER '|');
+		
+		DECLARE referencia REFERENCE TO Environment;
+		CALL diners.utilitarios.CargarVariables(OutputRoot, nomServiceConfig, referencia);
+		
+		DECLARE propiedades REFERENCE TO Environment.cache.service.{nomServiceConfig};
+		
+		CREATE LASTCHILD OF Environment NAME 'FlujosSOAP';
+		DECLARE FlujosSOAP REFERENCE TO Environment.FlujosSOAP;  
+		
+		--Mapeo Datos PS
+		SET FlujosSOAP.URL = propiedades.url;
+		SET FlujosSOAP.SOAPAction = propiedades.action;
+		SET FlujosSOAP.Timeout = propiedades.MAX_CONEXION;
+		SET Environment.DatosServicio.nsWSSoap = propiedades.nameSpace;
+		
+		DECLARE nsSoap NAMESPACE Environment.DatosServicio.nsWSSoap;
+		DECLARE soapIn REFERENCE TO Environment;
+		CREATE LASTCHILD OF Environment.FlujosSOAP.Input AS soapIn NAMESPACE nsSoap NAME propiedades.contenedorRequest;
+		
+		--Mapeo Datos Entrada PS
+		SET soapIn.CodigoOperacion = 'NEW';
+		SET soapIn.SetID = 'CLNTE';
+		SET soapIn.CaseID = '';
+		SET soapIn.DescripcionOpt = '';
+		SET soapIn.TemplateID = 'CRM_FIN';
+		SET soapIn.NumeroIdentificacion = wsentradas.numDocumento;
+		SET soapIn.TipoIdentificacion = wsentradas.tipoDocumento;
+		SET soapIn.CodAplicacion = Environment.codigoAplicacion;
+		SET soapIn.TipIdentificacion2 = '';
+		SET soapIn.CaseType = wsentradas.tipoCaso;
+		SET soapIn.CaseSubtype = wsentradas.subTipoCaso;
+		SET soapIn.CodCategoria = wsentradas.codSolicitud;
+		SET soapIn.CodEspecialidad = wsentradas.codProducto;
+		SET soapIn.CodDetalle = '';
+		SET soapIn.DescripcionCaso = COALESCE(wsentradas.descMensaje, '');
+		SET soapIn.DescripcionContacto = '';
+		SET soapIn.MetodoContacto = '';
+		SET soapIn.DireccionEmail = '';
+		--Mapeo Datos Entrada PS
+		SET soapIn.CodEntidad = '';
+		SET soapIn.CodMarca = '';
+		IF wsentradas.codPortal = 'PBN' AND wsentradas.codPortal IS NOT NULL THEN
+			SET soapIn.NumeroCuenta = Environment.Body.[ < ].dinBody.numTarjeta;
+			ELSE
+		SET soapIn.NumeroCuenta = '';
+		END IF;
+		IF wsentradas.numTarjeta IS NOT NULL AND wsentradas.numTarjeta <> '' AND wsentradas.codPortal IS NULL THEN
+			SET wsentradas.numTarjeta = diners.utilitarios.encriptacion.desencriptar(wsentradas.numTarjeta, referencia);
+			SET soapIn.NumeroTarjeta = wsentradas.numTarjeta;
+		ELSE
+			SET soapIn.NumeroTarjeta = '';
+		END IF;
+		--termina entrada soap
+		SET soapIn.IdentificLlamada = '';
+		SET soapIn.EstadoCaso = '';
+		SET soapIn.DetallePdf = '';
+		SET soapIn.FechaLlamada = '';
+		SET soapIn.HoraLlamada = '';
+		
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+/* * Funcion que mapea la estructura de salida. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+CREATE COMPUTE MODULE FlujoCreacionCasosReclamo_ProcesarSalida
+	/* * Funcion que mapea la estructura de salida. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		IF Environment.FlujosSOAP.salida.codError = '0' THEN
+			DECLARE propiedades REFERENCE TO Environment.cache.service.{nomServiceConfig};
+			DECLARE nomMetodo CHARACTER propiedades.objetoRespuesta;
+			SET Environment.DatosServicio.nsWsPs = FIELDNAMESPACE(Environment.FlujosSOAP.salida.Body.[ < ]);
+			DECLARE soapOut REFERENCE TO Environment.FlujosSOAP.salida.Body.{nomMetodo};
+			IF TRIM(soapOut.CodigoRespuesta) = '000' THEN
+				PROPAGATE TO LABEL 'invocarRPG' DELETE NONE;
+				IF Environment.FlujosAs400.Salida.MessageOut.codError IS NOT NULL AND Environment.FlujosAs400.Salida.MessageOut.codError <> '0' THEN
+				SET Environment.validarError = 1;
+				SET Environment.tipoError = 'T';
+				SET Environment.codigo = Environment.FlujosAs400.Salida.MessageOut.codError;
+				SET Environment.descripcion = Environment.FlujosAs400.Salida.MessageOut.descError;
+				SET Environment.fecha = CURRENT_TIMESTAMP;	
+				--error flujo rpg
+				ELSE
+				
+				DECLARE as400Response REFERENCE TO Environment.FlujosAs400.Salida.GENERANOTOUT;
+		
+				--Se setea el error del RPG
+			    IF TRIM(as400Response.PCODER) = '0' THEN
+			    	--Se obtiene las variables del sistema
+					DECLARE salidaWS REFERENCE TO Environment;
+					CREATE LASTCHILD OF Environment AS salidaWS NAME 'Response';
+					SET salidaWS.descMensaje = as400Response.PRESWS;
+					SET salidaWS.codTransaccion = soapOut.CodigoCaso;
+					SET salidaWS.fecha = soapOut.Fecha;
+					SET salidaWS.Hora = soapOut.Hora;
+				ELSE
+					SET Environment.validarError 	= 1;
+					SET Environment.hayError        = 1;
+					SET Environment.tipoError 		= 'N';
+					SET Environment.codigo 			= as400Response.PCODER;
+					SET Environment.descripcion 	= as400Response.PDESER;
+					SET Environment.fecha 			= CURRENT_TIMESTAMP;
+				END IF;
+				--termina if del rpg
+				END IF;
+			ELSE
+				SET Environment.hayError = 1;
+				SET Environment.codigo = soapOut.CodigoRespuesta;
+				SET Environment.descripcion = soapOut.DescripcionError;
+				SET Environment.fecha = CURRENT_TIMESTAMP;
+				SET Environment.tipoError = 'N';
+				SET Environment.validarError 	= 1;
+			
+			END IF;
+			
+		ELSE
+			--Mapeo Error
+			SET Environment.hayError = 1;
+			SET Environment.codigo = Environment.FlujosSOAP.salida.codError;
+			SET Environment.descripcion = Environment.FlujosSOAP.salida.descError;
+			SET Environment.fecha = CURRENT_TIMESTAMP;
+			SET Environment.tipoError = 'N';
+			SET Environment.validarError 	= 1;
+		END IF;
+		
+		RETURN TRUE;
+	END;
+END MODULE;
+
+/* * Funcion que mapea la estructura de salida. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+CREATE COMPUTE MODULE FlujoCreacionCasosReclamo_ArmarMensaje
+	DECLARE myISeries, librerias, moduloRPG, path, rutaSMSMS001 EXTERNAL CHARACTER '';
+	/* * Funcion que mapea la estructura de salida. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE wsdinheader REFERENCE TO Environment.Header.[ < ];
+		DECLARE wsentradas REFERENCE TO Environment.Body.[ < ].dinBody;
+		
+		CREATE LASTCHILD OF Environment NAME 'FlujosAs400';
+		DECLARE flujo REFERENCE TO Environment.FlujosAs400;
+		
+		SET flujo.ServiceConfigurable = myISeries;
+		SET flujo.moduloRPG = 'SMSMS001';
+		SET flujo.Programa = 'GeneraNot';
+		SET flujo.Library = 'LIBOBJ,QGPL,DVMCOMUN';
+		SET flujo.Path = rutaSMSMS001;
+		SET flujo.longitudSalida = '623';
+		
+		DECLARE As400In REFERENCE TO Environment;
+		CREATE LASTCHILD OF Environment.FlujosAs400.Entrada AS As400In NAME 'GENERANOT';
+		
+		--Mapeo Datos Servicio
+		SET As400In.PTIPID = wsentradas.tipoDocumento;
+		SET As400In.PIDENT = wsentradas.numDocumento;
+		SET As400In.PTIPID2 = COALESCE(Environment.entrada.body.tipoDocumentoAdi, ' ');
+		SET As400In.PIDENT2 = COALESCE(Environment.entrada.body.numDocumentoAdi, ' ');
+		SET As400In.PTARJE = '0';
+		SET As400In.PENTID = '';
+		SET As400In.PMARCA = '';
+		SET As400In.PCODAP = Environment.codTransaccion;
+		SET As400In.PCANAL = wsdinheader.nsHeader:canalID;
+		
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+/* * Funcion que mapea la estructura de error. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+CREATE COMPUTE MODULE FlujoCreacionCasosReclamo_MapearError
+	/* * Funcion que mapea la estructura de error. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.hayError= 3;
+		DECLARE headerCall REFERENCE TO Environment.Header;
+		CALL diners.header.comun.MappingHeader(headerCall, 0);
+		CREATE FIELD OutputRoot.SOAP;
+		DECLARE cabecera REFERENCE TO OutputRoot.SOAP;
+		SET cabecera.Header = headerCall;
+		IF Environment.validarError <> 1 OR Environment.validarError IS NULL THEN
+			SET Environment.validarError = 3;
+		END IF;		
+		RETURN TRUE;
+	END;
+END MODULE;
+
+/* * Funcion que mapea la estructura de salida. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+CREATE COMPUTE MODULE FlujoCreacionCasosReclamo_MapearSalida
+	/* * Funcion que mapea la estructura de salida. * Parameters: * IN: REFERENCE InputRoot - arbol que contiene los datos de entrada. 
+    * RETURNS: BOOLEAN . * */
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE headerCall REFERENCE TO Environment.Header;
+		
+		CALL diners.header.comun.MappingHeader(headerCall, 0);
+		SET OutputRoot.SOAP.Header = headerCall;
+		
+		--Se mapea la salida
+		SET OutputRoot.SOAP.Body.ns:FlujoCreacionCasosReclamoResponse.dinBody = Environment.Response;
+		SET OutputRoot.SOAP.Body.ns:FlujoCreacionCasosReclamoResponse.dinError = Environment.error;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

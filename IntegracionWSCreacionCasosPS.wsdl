@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="IntegracionWSCreacionCasosPS" targetNamespace="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://www.dinersclub.com.ec/2016/DinHeader">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="IntegracionWSCreacionCasosPSSOAP" originalBindingStyle="document"/>
+        <generatedXSD location="IntegracionWSCreacionCasosPS_InlineSchema1.xsd"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  <wsdl:types>
+    
+            <xsd:schema targetNamespace="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS" xmlns:err="http://www.dinersclub.com.ec/2016/DinError" xmlns:hea="http://www.dinersclub.com.ec/2016/DinHeader" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+<xsd:import namespace="http://www.dinersclub.com.ec/2016/DinHeader" schemaLocation="../EsquemasComunes/DinHeader.xsd">
+    	</xsd:import>
+
+<xsd:include schemaLocation="IntegracionWSCreacionCasosPS_InlineSchema1.xsd"/>
+</xsd:schema>
+       
+    </wsdl:types>
+  <wsdl:message name="FlujoCreacionCasoPSRequest">
+    <wsdl:part element="tns:FlujoCreacionCasoPS" name="parameters"/>
+    <wsdl:part element="xsd1:dinHeader" name="dinHeaderParameters"/>
+  </wsdl:message>
+  <wsdl:message name="FlujoCreacionCasoPSResponse">
+    <wsdl:part element="tns:FlujoCreacionCasoPSResponse" name="parameters"/>
+    <wsdl:part element="xsd1:dinHeader" name="dinHeaderParameters"/>
+  </wsdl:message>
+  <wsdl:message name="FlujoCreacionCasosReclamoRequest">
+  	<wsdl:part element="tns:FlujoCreacionCasosReclamo" name="parameters"/>
+  	<wsdl:part element="xsd1:dinHeader" name="dinHeaderParameters"/>
+  </wsdl:message>
+  <wsdl:message name="FlujoCreacionCasosReclamoResponse">
+  	<wsdl:part element="tns:FlujoCreacionCasosReclamoResponse" name="parameters"/>
+  	<wsdl:part element="xsd1:dinHeader" name="dinHeaderParameters"/>
+  </wsdl:message>
+  <wsdl:portType name="IntegracionWSCreacionCasosPS">
+    <wsdl:operation name="FlujoCreacionCasoPS">
+      <wsdl:input message="tns:FlujoCreacionCasoPSRequest"/>
+      <wsdl:output message="tns:FlujoCreacionCasoPSResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="FlujoCreacionCasosReclamo">
+    	<wsdl:input message="tns:FlujoCreacionCasosReclamoRequest"/>
+    	<wsdl:output message="tns:FlujoCreacionCasosReclamoResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IntegracionWSCreacionCasosPSSOAP" type="tns:IntegracionWSCreacionCasosPS">
+
+  	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  	<wsdl:operation name="FlujoCreacionCasoPS">
+
+  		<soap:operation soapAction="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS/FlujoCreacionCasoPS"/>
+  		<wsdl:input>
+			<soap:header message="tns:FlujoCreacionCasoPSRequest" part="dinHeaderParameters" use="literal" />
+			<soap:body parts="parameters" use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+			<soap:header message="tns:FlujoCreacionCasoPSResponse" part="dinHeaderParameters" use="literal" />
+			<soap:body parts="parameters" use="literal" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  	<wsdl:operation name="FlujoCreacionCasosReclamo">
+  		<soap:operation soapAction="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS/FlujoCreacionCasosReclamo"/>
+  		<wsdl:input>
+  			<soap:header message="tns:FlujoCreacionCasosReclamoRequest" part="dinHeaderParameters" use="literal" />
+			<soap:body parts="parameters" use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+  			<soap:header message="tns:FlujoCreacionCasosReclamoResponse" part="dinHeaderParameters" use="literal" />
+			<soap:body parts="parameters" use="literal" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IntegracionWSCreacionCasosPS">
+    <wsdl:port binding="tns:IntegracionWSCreacionCasosPSSOAP" name="IntegracionWSCreacionCasosPSSOAP">
+      <soap:address location="http://localhost:7800/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

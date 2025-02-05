@@ -1,0 +1,14 @@
+BROKER SCHEMA com.diners.wscreacioncasosps
+
+
+CREATE COMPUTE MODULE WSCreacionCasosPS_MapearTrx
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot = InputRoot;
+		
+		DECLARE nsHea NAMESPACE 'http://www.dinersclub.com.ec/2016/DinHeader';
+		SET Environment.tipoTransaccion = InputRoot.SOAP.Header.{nsHea}:tipoTransaccion;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

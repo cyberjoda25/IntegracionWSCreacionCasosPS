@@ -1,0 +1,27 @@
+
+
+Importing file: C:\Users\EstebanFernandoMata\Desktop\R72400\workspace\IntegracionWSCreacionCasosPS\IntegracionWSCreacionCasosPS.wsdl
+
+The WSDL import will proceed with bindings IntegracionWSCreacionCasosPSSOAP.
+Creating wsdl schema document for file:///C:/Users/EstebanFernandoMata/Desktop/R72400/workspace/IntegracionWSCreacionCasosPS/IntegracionWSCreacionCasosPS.wsdl.
+Parsing wsdl binding {http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS}IntegracionWSCreacionCasosPSSOAP.
+Parsing wsdl binding input FlujoCreacionCasoPS.
+Parsing wsdl binding output FlujoCreacionCasoPS.
+Parsing wsdl binding input FlujoCreacionCasosReclamo.
+Parsing wsdl binding output FlujoCreacionCasosReclamo.
+Processing doc style for operation FlujoCreacionCasoPS.
+Processing doc style for operation FlujoCreacionCasosReclamo.
+Populating WSDL schema IntegracionWSCreacionCasosPS.xsd.
+Creating file IntegracionWSCreacionCasosPS.xsd in the workspace.
+Creating file IntegracionWSCreacionCasosPS_InlineSchema1.xsd in the workspace.
+Creating file /IntegracionWSCreacionCasosPS/EsquemasComunes/DinHeader.xsd in the workspace.
+Creating file /IntegracionWSCreacionCasosPS/EsquemasComunes/DinError.xsd in the workspace.
+Copying source WSDL IntegracionWSCreacionCasosPS.wsdl to IntegracionWSCreacionCasosPS.wsdl.
+
+Elapsed time processing this message definition file: 0.832 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+

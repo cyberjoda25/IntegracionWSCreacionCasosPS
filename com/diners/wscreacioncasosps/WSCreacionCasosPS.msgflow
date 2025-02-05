@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmLabel.msgnode="ComIbmLabel.msgnode" xmlns:ComIbmRouteToLabel.msgnode="ComIbmRouteToLabel.msgnode" xmlns:ComIbmSOAPInput.msgnode="ComIbmSOAPInput.msgnode" xmlns:ComIbmSOAPReply.msgnode="ComIbmSOAPReply.msgnode" xmlns:com_diners_wscreacioncasosps_FlujoCreacionCasoPS.subflow="com/diners/wscreacioncasosps/FlujoCreacionCasoPS.subflow" xmlns:com_diners_wscreacioncasosreclamo_FlujoCreacionCasosReclamo.subflow="com/diners/wscreacioncasosreclamo/FlujoCreacionCasosReclamo.subflow"
+    xmlns:com_diners_wsgeneracionError_GeneracionErrores.subflow="com/diners/wsgeneracionError/GeneracionErrores.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="com/diners/wscreacioncasosps/WSCreacionCasosPS.msgflow" nsPrefix="com_diners_wscreacioncasosps_WSCreacionCasosPS.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="WSCreacionCasosPS" bundleName="com/diners/wscreacioncasosps/WSCreacionCasosPS" pluginId="IntegracionWSCreacionCasosPS"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/IntegracionWSCreacionCasosPS/icons/full/obj16/WSCreacionCasosPS.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/IntegracionWSCreacionCasosPS/icons/full/obj30/WSCreacionCasosPS.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="76,66" wsdlFileName="IntegracionWSCreacionCasosPS.wsdl" selectedPortType="IntegracionWSCreacionCasosPS" selectedBinding="IntegracionWSCreacionCasosPSSOAP" selectedPort="IntegracionWSCreacionCasosPSSOAP" targetNamespace="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS" useHTTPTransport="true" urlSelector="/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS"
+          allowQueryWSDL="true">
+        <translation xmi:type="utility:ConstantString" string="SOAP Input"/>
+        <mustUnderstandHeadersWSDLDefined header="FlujoCreacionCasoPSRequest" namespace="http://www.dinersclub.com.ec/2016/DinHeader" operationName="FlujoCreacionCasoPS"/>
+        <mustUnderstandHeadersWSDLDefined header="FlujoCreacionCasosReclamoRequest" namespace="http://www.dinersclub.com.ec/2016/DinHeader" operationName="FlujoCreacionCasosReclamo"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="636,62">
+        <translation xmi:type="utility:ConstantString" string="SOAP Reply"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="208,62" computeExpression="esql://routine/diners.logs#IniciarConfLogs.Main">
+        <translation xmi:type="utility:ConstantString" string="IniciarLogs"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="523,153" computeExpression="esql://routine/diners.logs#FinalizarConfLogs.Main">
+        <translation xmi:type="utility:ConstantString" string="FinalizarLogs"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="128,242" labelName="FlujoCreacionCasoPS">
+        <translation xmi:type="utility:ConstantString" string="et_FlujoCreacionCasoPS"/>
+      </nodes>
+      <nodes xmi:type="ComIbmRouteToLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="306,153">
+        <translation xmi:type="utility:ConstantString" string="Route To Label"/>
+      </nodes>
+      <nodes xmi:type="com_diners_wscreacioncasosps_FlujoCreacionCasoPS.subflow:FCMComposite_1" xmi:id="FCMComposite_1_7" location="312,242">
+        <translation xmi:type="utility:ConstantString" string="FlujoCreacionCasoPS"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="107,328" labelName="FlujoCreacionCasosReclamo">
+        <translation xmi:type="utility:ConstantString" string="et_FlujoCreacionCasosReclamo"/>
+      </nodes>
+      <nodes xmi:type="com_diners_wscreacioncasosreclamo_FlujoCreacionCasosReclamo.subflow:FCMComposite_1" xmi:id="FCMComposite_1_9" location="347,328">
+        <translation xmi:type="utility:ConstantString" string="FlujoCreacionCasosReclamo"/>
+      </nodes>
+      <nodes xmi:type="com_diners_wsgeneracionError_GeneracionErrores.subflow:FCMComposite_1" xmi:id="FCMComposite_1_10" location="260,4">
+        <translation xmi:type="utility:ConstantString" string="GeneracionErrores"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="138,117" computeExpression="esql://routine/com.diners.wscreacioncasosps#WSCreacionCasosPS_MapearTrx.Main">
+        <translation xmi:type="utility:ConstantString" string="MapearTrx"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_11" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

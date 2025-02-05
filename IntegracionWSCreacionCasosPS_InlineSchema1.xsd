@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS" xmlns:err="http://www.dinersclub.com.ec/2016/DinError" xmlns:hea="http://www.dinersclub.com.ec/2016/DinHeader" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd1="http://www.dinersclub.com.ec/2016/DinHeader">
+        	<xsd:import namespace="http://www.dinersclub.com.ec/2016/DinHeader" schemaLocation="../EsquemasComunes/DinHeader.xsd"/>
+    <xsd:import namespace="http://www.dinersclub.com.ec/2016/DinError" schemaLocation="../EsquemasComunes/DinError.xsd"/>
+    	<xsd:element ibmSchExtn:docRoot="true" name="FlujoCreacionCasoPS">
+    		<xsd:complexType>
+    			<xsd:sequence>
+    				<xsd:element maxOccurs="1" minOccurs="1" name="dinBody" type="tns:dinBodyTypeCasosPSIn"/>
+    			</xsd:sequence>
+    		</xsd:complexType>
+    	</xsd:element>
+    	<xsd:element ibmSchExtn:docRoot="true" name="FlujoCreacionCasoPSResponse">
+    		<xsd:complexType>
+    			<xsd:sequence>
+    				<xsd:element maxOccurs="1" minOccurs="0" name="dinBody" type="tns:dinBodyTypeCasosPSOut"/>
+    				<xsd:element maxOccurs="1" minOccurs="0" name="dinError" type="err:errorTraceTip"/>
+    			</xsd:sequence>
+    		</xsd:complexType>
+    	</xsd:element>
+    	<xsd:element ibmSchExtn:docRoot="true" name="FlujoCreacionCasosReclamo">
+    		<xsd:complexType>
+    			<xsd:sequence>
+
+    				<xsd:element maxOccurs="1" minOccurs="1"
+    					name="dinBody" type="tns:dinBodyTypeCasoReclamoIn"/>
+
+    			</xsd:sequence>
+    		</xsd:complexType>
+    	</xsd:element>
+    	<xsd:element ibmSchExtn:docRoot="true" name="FlujoCreacionCasosReclamoResponse">
+    		<xsd:complexType>
+    			<xsd:sequence>
+
+    				<xsd:element maxOccurs="1" minOccurs="0" name="dinBody" type="tns:dinBodyTypeCasoReclamoOut"/>
+    				<xsd:element maxOccurs="1" minOccurs="0" name="dinError" type="err:errorTraceTip"/>
+    			</xsd:sequence>
+    		</xsd:complexType>
+    	</xsd:element>
+
+    	<xsd:complexType name="dinBodyTypeCasosPSOut">
+    		<xsd:sequence>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="codigoRespuesta" type="xsd:string" />
+				<xsd:element maxOccurs="1" minOccurs="0" name="descripcionError" type="xsd:string" />
+				<xsd:element maxOccurs="1" minOccurs="0" name="codigoCaso" type="xsd:string" />
+				<xsd:element maxOccurs="1" minOccurs="0" name="identificacionCliente" type="xsd:string" />
+				<xsd:element maxOccurs="1" minOccurs="1" name="descMensaje" type="xsd:string" />
+				<xsd:element maxOccurs="1" minOccurs="1" name="fecha" type="xsd:string" />
+				<xsd:element maxOccurs="1" minOccurs="1" name="hora" type="xsd:string" />
+    		</xsd:sequence>
+    	</xsd:complexType>
+
+    	<xsd:complexType name="dinBodyTypeCasosPSIn">
+            	<xsd:sequence>
+            		<xsd:element maxOccurs="1" minOccurs="1" name="numDocumento" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="0" name="numCuenta" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="0" name="numTarjeta" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="1" name="estadoCaso" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="1" name="codTransaccion" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="1" name="descMensaje" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="1" name="codAplicacion" type="xsd:string"/>
+					<xsd:element maxOccurs="1" minOccurs="1" name="tipoDocumento" type="xsd:string"/>
+            	</xsd:sequence>
+            </xsd:complexType>
+
+    	<xsd:complexType name="dinBodyTypeCasoReclamoIn">
+    		<xsd:sequence>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="tipoDocumento">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+
+    						<xsd:whiteSpace value="collapse"/>
+
+
+    						<xsd:length value="1"/>
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="numDocumento">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+    						<xsd:pattern value="\w*"/>
+
+    						<xsd:whiteSpace value="collapse"/>
+
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="codSolicitud">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+
+    						<xsd:whiteSpace value="collapse"/>
+
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="codProducto">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+    						<xsd:whiteSpace value="collapse"/>
+
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="descMensaje">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+
+    						<xsd:whiteSpace value="collapse"/>
+
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="tipoCaso">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+
+    						<xsd:whiteSpace value="collapse"/>
+
+    						<xsd:pattern value="[A-Z]+"/>
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="subTipoCaso">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+
+    						<xsd:whiteSpace value="collapse"/>
+
+    						<xsd:pattern value="[A-Z]+"/>
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="codDetalle">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+
+
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="desDetalle">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+
+
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="codNemonico">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+    						<xsd:whiteSpace value="collapse"/>
+    						<xsd:minLength value="0"/>
+
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="numTarjeta" type="xsd:string">
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="tipoDocumentoAdi" type="xsd:string">
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="numDocumentoAdi" type="xsd:string">
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="codAplicacion" type="xsd:string">
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="tipoSeleccion" type="xsd:string">
+
+    			</xsd:element>
+    			<xsd:element maxOccurs="1" minOccurs="0" name="codPortal">
+    				<xsd:simpleType>
+    					<xsd:restriction base="xsd:string">
+    						<xsd:maxLength value="3" />
+
+    						<xsd:pattern value="[A-Z]*"></xsd:pattern>
+    					</xsd:restriction>
+    				</xsd:simpleType>
+    			</xsd:element>
+    		</xsd:sequence>
+    	</xsd:complexType>
+
+    	<xsd:complexType name="dinBodyTypeCasoReclamoOut">
+    		<xsd:sequence>
+    			<xsd:element maxOccurs="1" minOccurs="1" name="descMensaje" type="xsd:string"/>
+	      		<xsd:element maxOccurs="1" minOccurs="1" name="codTransaccion" type="xsd:string"/>
+	      		<xsd:element maxOccurs="1" minOccurs="1" name="fecha" type="xsd:string"/>
+	      		<xsd:element maxOccurs="1" minOccurs="0" name="Hora" type="xsd:string"/>
+    		</xsd:sequence>
+    	</xsd:complexType>
+</xsd:schema>

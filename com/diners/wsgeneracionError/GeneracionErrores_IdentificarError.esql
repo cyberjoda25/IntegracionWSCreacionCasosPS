@@ -1,0 +1,37 @@
+BROKER SCHEMA com.diners.wsgeneracionError
+
+DECLARE ns NAMESPACE 'http://www.dinersclub.com.ec/iib/soa/esb/clientes/consultas/ConsultaSociosWeb/IntegracionWSCreacionCasosPS';
+
+CREATE COMPUTE MODULE GeneracionErrores_IdentificarError
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.operacion = InputLocalEnvironment.Destination.RouterList.DestinationData.labelName;
+		SET Environment.validarError = 2;
+		SET Environment.codigo = 'IIB-001';
+		SET Environment.fecha = CURRENT_TIMESTAMP;
+		SET Environment.tipoError = 'T' ;
+
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE GeneracionErrores_MapeoError
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE headerCall REFERENCE TO InputRoot.SOAP.Header; -- Environment.Header;
+		CALL diners.header.comun.MappingHeaderFailureGeneral(headerCall.SOAP,0);
+		SET OutputRoot.SOAP.Header = headerCall;
+
+
+		DECLARE strTemp CHARACTER;
+		DECLARE operacion CHARACTER;
+
+		SET operacion = REPLACE(Environment.operacion, 'Response', '');
+
+		SET strTemp = 'SET OutputRoot.SOAP.Body.ns:'||operacion||'Response.ns:dinError = Environment.error;';
+		EVAL(strTemp);
+
+		RETURN TRUE;
+	END;
+END MODULE;
